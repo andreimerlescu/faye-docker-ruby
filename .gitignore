@@ -1,1 +1,3 @@
 .DS_Store
+faye/.env*
+!faye/.env.example
