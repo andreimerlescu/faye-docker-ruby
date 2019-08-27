@@ -1,0 +1,5 @@
+source 'https://rubygems.org/'
+
+gem 'permessage_deflate'
+gem 'faye'
+gem 'faye-redis'
