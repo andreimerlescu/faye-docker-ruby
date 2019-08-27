@@ -1,0 +1,53 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    addressable (2.6.0)
+      public_suffix (>= 2.0.2, < 4.0)
+    cookiejar (0.3.3)
+    em-hiredis (0.3.1)
+      eventmachine (~> 1.0)
+      hiredis (~> 0.6.0)
+    em-http-request (1.1.5)
+      addressable (>= 2.3.4)
+      cookiejar (!= 0.3.1)
+      em-socksify (>= 0.3)
+      eventmachine (>= 1.0.3)
+      http_parser.rb (>= 0.6.0)
+    em-socksify (0.3.2)
+      eventmachine (>= 1.0.0.beta.4)
+    eventmachine (1.2.7)
+    faye (1.2.4)
+      cookiejar (>= 0.3.0)
+      em-http-request (>= 0.3.0)
+      eventmachine (>= 0.12.0)
+      faye-websocket (>= 0.9.1)
+      multi_json (>= 1.0.0)
+      rack (>= 1.0.0)
+      websocket-driver (>= 0.5.1)
+    faye-redis (0.2.0)
+      em-hiredis (>= 0.2.0)
+      eventmachine (>= 0.12.0)
+      multi_json (>= 1.0.0)
+    faye-websocket (0.10.9)
+      eventmachine (>= 0.12.0)
+      websocket-driver (>= 0.5.1)
+    hiredis (0.6.3)
+    http_parser.rb (0.6.0)
+    multi_json (1.13.1)
+    permessage_deflate (0.1.4)
+    public_suffix (3.1.1)
+    rack (2.0.7)
+    websocket-driver (0.7.1)
+      websocket-extensions (>= 0.1.0)
+    websocket-extensions (0.1.4)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  faye
+  faye-redis
+  permessage_deflate
+
+BUNDLED WITH
+   2.0.1
