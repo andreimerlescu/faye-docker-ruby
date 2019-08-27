@@ -24,3 +24,37 @@
 | `FAYE_SSL_NO_TLSV11` | `false` | Optional flag. Checked for `YES` values including `%w{YES Yes Y yes y 1 true si da ja}` |
 | `FAYE_SSL_CA_FILE` | `nil` | Required if `FAYE_SSL_VERIFY_MODE` is `peer` or `force_peer`. |
 
+
+
+### Generate SSL Certificate
+
+**Important Note**: `FAYE_SSL_KEY_FILE` and `FAYE_SSL_CRT_FILE` need to be the filenames exactly as they appear inside the mounted volume that points to `/etc/ssl/certs/faye`, otherwise the server will not boot properly.
+
+Next you will need to generate an SSL certificate 
+
+```
+$ cd ssl
+$ openssl req -x509 -nodes -days 3650 -newkey rsa:4096 -keyout development.key -out development.crt
+
+Generating a 4096 bit RSA private key
+......++
+....................................................................................................................++
+writing new private key to 'development.key'
+-----
+You are about to be asked to enter information that will be incorporated
+into your certificate request.
+What you are about to enter is what is called a Distinguished Name or a DN.
+There are quite a few fields but you can leave some blank
+For some fields there will be a default value,
+If you enter '.', the field will be left blank.
+-----
+Country Name (2 letter code) []:US
+State or Province Name (full name) []:New York
+Locality Name (eg, city) []:New York
+Organization Name (eg, company) []:Company
+Organizational Unit Name (eg, section) []:Organization
+Common Name (eg, fully qualified host name) []:localhost
+Email Address []:webmaster@localhost
+```
+
+Using `development.key` and `development.crt` as the arguments for `-keyout` and `-out` would mean that you need to specify `FAYE_SSL_KEY_FILE=development.key` and `FAYE_SSL_CRT_FILE=development.crt`.
