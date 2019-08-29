@@ -22,6 +22,7 @@ services:
       - ./faye/.env
     volumes:
       - ./ssl:/etc/ssl/certs/faye
+      - ./tokens:/usr/local/faye/tokens
     networks:
       - public
       - private

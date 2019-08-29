@@ -9,10 +9,10 @@ build:
 	docker build -t $(IMAGE):$(VERSION) .
 
 run:
-	docker-compose up
+	docker-compose up --force-recreate --build
 
 boot:
-	docker-compose up -d
+	docker-compose up -d --force-recreate --build
 
 logs:
 	docker-compose logs -f

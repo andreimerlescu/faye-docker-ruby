@@ -23,7 +23,7 @@
 | `FAYE_SSL_NO_TLSV1` | `false` | Optional flag. Checked for `YES` values including `%w{YES Yes Y yes y 1 true si da ja}` |
 | `FAYE_SSL_NO_TLSV11` | `false` | Optional flag. Checked for `YES` values including `%w{YES Yes Y yes y 1 true si da ja}` |
 | `FAYE_SSL_CA_FILE` | `nil` | Required if `FAYE_SSL_VERIFY_MODE` is `peer` or `force_peer`. |
-
+| `FAYE_TOKENS_JSON_FILE` | `faye/development.json` | Mounted via docker / docker-compose into faye service |
 
 
 ### Generate SSL Certificate

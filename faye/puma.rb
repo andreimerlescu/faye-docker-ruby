@@ -5,7 +5,7 @@ if ENV['FAYE_PRELOAD_APP'] && %w{YES Yes Y yes y 1 true si da ja}.include?(ENV['
 end
 tag (ENV['FAYE_TAG'] || 'faye').to_s
 environment (ENV['FAYE_ENVIRONMENT'] || "development").to_s
-bind (ENV['FAYE_BIND'] || '0.0.0.0').to_s, (ENV['FAYE_HTTP_PORT'] || 4242).to_i
+bind "tcp://#{(ENV['FAYE_BIND'] || '0.0.0.0').to_s}:#{(ENV['FAYE_HTTP_PORT'] || 4242).to_i}"
 
 ssl_enabled = ENV['FAYE_ENABLE_SSL'] && %w{YES Yes Y yes y 1 true si da ja}.include?(ENV['FAYE_ENABLE_SSL'])
 if ssl_enabled
