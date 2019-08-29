@@ -1,0 +1,6 @@
+{
+  "ServiceName": {
+    "origin": "http://localhost:3000",
+    "auth_token": "yourSecretAuthToken"
+  }
+}

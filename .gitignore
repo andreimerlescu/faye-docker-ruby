@@ -1,5 +1,9 @@
 .DS_Store
 faye/.env*
+!faye/.keep
 !faye/.env.example
 ssl/*
 !ssl/.keep
+tokens/*
+!tokens/.keep
+!tokens/example.json
