@@ -1,4 +1,4 @@
-FROM ruby:2.6.3
+FROM ruby:2.6
 MAINTAINER Andrei Merlescu <andrei+github@merlescu.net>
 # RUN bundle config --global frozen 1 # uncomment for production
 RUN mkdir -p /usr/local/faye/{app,tokens}
