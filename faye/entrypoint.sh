@@ -7,7 +7,7 @@ else
 	echo "Need to patch a bug inside rack_adapter"
 	PATCH_FILE=`find /. -type f -name 'rack_adapter.rb'`
 
-	# sed -i 's/      hijack.close_write/      hijack.close_write if hijack.respond_to? :close_write/g' $PATCH_FILE
+	sed -i 's/      hijack.close_write/      hijack.close_write if hijack.respond_to? :close_write/g' $PATCH_FILE
 	# cat $PATCH_FILE
 	echo "Done patching!"
 fi 

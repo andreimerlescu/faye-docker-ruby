@@ -6,8 +6,8 @@ end
 tag (ENV['FAYE_TAG'] || 'faye').to_s
 bind "tcp://#{(ENV['FAYE_BIND'] || '0.0.0.0').to_s}:#{(ENV['FAYE_HTTP_PORT'] || 4242).to_i}"
 
-debug
-raise_exception_on_sigterm false
+# debug
+# raise_exception_on_sigterm false
 log_requests true
 
 ssl_enabled = ENV['FAYE_ENABLE_SSL'] && %w{YES Yes Y yes y 1 true si da ja}.include?(ENV['FAYE_ENABLE_SSL'])
