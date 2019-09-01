@@ -31,4 +31,6 @@ bayeux.add_websocket_extension(PermessageDeflate)
 # Enable message security/tokens
 bayeux.add_extension(FayeDocker::ServerAuth.new)
 
+Faye::WebSocket.load_adapter('thin')
+
 run bayeux

@@ -8,7 +8,7 @@ module FayeDocker
         return callback.call(message)
       end #unless
 
-      FayeDocker.logger.info message.to_json
+      FayeDocker.logger.debug "IN    #{Time.now.strftime("%c")}[#{message['id']}] #{message['clientId']} via #{message['connectionType']} to #{message['channel']}"
 
       # Collect auth_token and auth_service
       if message['ext']
@@ -44,11 +44,11 @@ module FayeDocker
             unless registry[auth_service]['auth_token'].to_s == auth_token.to_s
               message['error'] = "403::Forbidden (#{__LINE__})"
             else
-              # ap "--------------------------------> successfully delivered message!"
+              FayeDocker.logger.info "--------------------------------> successfully delivered message!"
               if request && request.env['HTTP_REFERRER'] != registry[auth_service]['origin']
                 message['error'] = "403::Forbidden (#{__LINE__}) [#{request.env['HTTP_REFERRER']}]"
-              else
-                return callback.call(message)
+              # else
+              #   return callback.call(message)
               end
             end #/unless
           else
@@ -58,6 +58,10 @@ module FayeDocker
       else
         message['error'] = "403::Forbidden (#{__LINE__})"
       end #/if-else
+
+      if message['error']
+        FayeDocker.logger.warn message['error']
+      end #/if
 
       # Call the server back now we're done
       callback.call(message)
