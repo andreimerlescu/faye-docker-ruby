@@ -1,6 +1,6 @@
 FAYE_VERSION=1.0.2
 FAYE_IMAGE=amerlescucodez/docker-faye-ruby
-NGINX_VERSION=1.0.0
+NGINX_VERSION=1.0.1
 NGINX_IMAGE=amerlescucodez/docker-faye-nginx
 
 .PHONY: all

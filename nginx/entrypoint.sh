@@ -1,8 +1,6 @@
 #!/bin/bash
 set +x 
 
-env
-
 mkdir -p /var/www/faye
 
 cat >/var/www/faye/index.html <<'EOF'
@@ -45,17 +43,36 @@ fi
 
 read -r -d '' faye_proxy_configurations << EOF
 		location @faye_puma {
-			# proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
-			# proxy_set_header X-Real-IP \$remote_addr;
-			# proxy_set_header X-Forwarded-Host \$server_name;
-			# proxy_set_header Host \$host;
-			# proxy_set_header X-Forwarded-Proto https;
-			proxy_set_header Upgrade \$http_upgrade;
-			proxy_set_header Connection "upgrade";
+			# Proxy Configurations
 			proxy_http_version 1.1;
-			# proxy_redirect off;
+			proxy_redirect off;
 			proxy_pass http://faye_puma;
+
+			# Proxy Headers
+			proxy_set_header X-Forwarded-For \$proxy_add_x_forwarded_for;
+			proxy_set_header X-Real-IP \$remote_addr;
+			proxy_set_header X-Forwarded-Host \$server_name;
+			proxy_set_header Host \$host;
+			proxy_set_header X-Forwarded-Proto https;
+			proxy_set_header Upgrade \$http_upgrade;
+			proxy_set_header Connection \$connection_upgrade;
+			
+			# Request Headers
 			add_header X-location websocket always;
+			set \$cors '';
+			if (\$http_origin ~ '${FAYE_HTTP_ORIGIN_REGEX}') {
+				set \$cors 'true';
+			}
+
+			if (\$cors = 'true') {
+				add_header 'Access-Control-Allow-Origin' "${FAYE_CORS_ORIGIN_URL}" always;
+				add_header 'Access-Control-Allow-Credentials' 'true' always;
+				add_header 'Access-Control-Allow-Methods' 'GET, POST, PUT, DELETE, OPTIONS' always;
+				add_header 'Access-Control-Allow-Headers' 'Accept,Authorization,Cache-Control,Content-Type,DNT,If-Modified-Since,Keep-Alive,Origin,User-Agent,X-Requested-With' always;
+				
+				# required to be able to read Authorization header in frontend
+				#add_header 'Access-Control-Expose-Headers' 'Authorization' always;
+			}
 		}
 
 EOF
@@ -63,7 +80,7 @@ EOF
 read -r -d '' general_configurations << EOF
 		add_header X-Content-Type-Options nosniff;
 		add_header Strict-Transport-Security "max-age=63072000; includeSubdomains; preload";
-
+		
 		error_page 500 502 503 504 /500.html;
 		client_max_body_size 4G;
 		keepalive_timeout 10;
@@ -72,11 +89,12 @@ read -r -d '' general_configurations << EOF
 
 EOF
 
-ssl_servers=""
+ssl_server=""
 if [ "${FAYE_USE_SSL}" -eq "1" ]; then
-	read -r -d '' ssl_servers << EOF
+	read -r -d '' ssl_server << EOF
 	server {
-		listen  ${FAYE_HTTPS_PORT} http2 ssl;    
+		listen  ${FAYE_HTTPS_PORT} http2 ssl;
+		listen  [::]:${FAYE_HTTPS_PORT} http2 ssl;
 		server_name ${FAYE_SERVER_HOSTNAME};
 		root /var/www/faye;
 	
@@ -86,18 +104,6 @@ if [ "${FAYE_USE_SSL}" -eq "1" ]; then
 
 		${faye_proxy_configurations}
 
-	}
-
-	server {
-		listen  [::]:${FAYE_HTTPS_PORT} http2 ssl;    
-		server_name ${FAYE_SERVER_HOSTNAME};
-		root /var/www/faye;
-	
-		${ssl_configurations}
-
-		${general_configurations}
-
-		${faye_proxy_configurations}
 	}
 
 EOF
@@ -142,17 +148,12 @@ http {
 
 	server {
 	    listen ${FAYE_HTTP_PORT} http2;
-	    server_name ${FAYE_SERVER_HOSTNAME};
-	    return 301 https://\$host\$request_uri;
-	}
-
-	server {
 	    listen [::]:${FAYE_HTTP_PORT} http2;
 	    server_name ${FAYE_SERVER_HOSTNAME};
 	    return 301 https://\$host\$request_uri;
 	}
 
-	${ssl_servers}
+	${ssl_server}
 }
 
 EOF
