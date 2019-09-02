@@ -9,22 +9,40 @@ services:
     networks:
       - private
 
+  nginx:
+    build: 
+      context: .
+      dockerfile: nginx.Dockerfile
+    links:
+      - faye
+    depends_on:
+      - faye
+    ports:
+      - 8080:80
+      - 8443:443
+    env_file:
+      ./nginx/.env
+    volumes:
+      - ./ssl:/opt/ssl
+    networks:
+      - public
+      - private
+
   faye:
-    build: .
+    build: 
+      context: .
+      dockerfile: faye.Dockerfile
     links:
       - redis
     depends_on:
       - redis
-    ports:
-      - 4242:4242
-      - 4443:4443
+    expose:
+      - 4242
     env_file:
       - ./faye/.env
     volumes:
-      - ./ssl:/etc/ssl/certs/faye
       - ./tokens:/usr/local/faye/tokens
     networks:
-      - public
       - private
 
 networks:

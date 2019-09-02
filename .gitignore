@@ -7,3 +7,7 @@ ssl/*
 tokens/*
 !tokens/.keep
 !tokens/example.json
+nginx/*
+!nginx/.keep
+!nginx/.env.example
+!nginx/entrypoint.sh

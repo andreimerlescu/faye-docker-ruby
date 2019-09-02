@@ -1,17 +1,15 @@
-VERSION=1.0.1
-IMAGE=amerlescucodez/docker-faye-ruby
+FAYE_VERSION=1.0.2
+FAYE_IMAGE=amerlescucodez/docker-faye-ruby
+NGINX_VERSION=1.0.0
+NGINX_IMAGE=amerlescucodez/docker-faye-nginx
 
 .PHONY: all
 
 all:
 
 build:
-	docker build -t $(IMAGE):$(VERSION) .
-
-publish: build
-	docker push $(IMAGE):$(VERSION)
-	docker build -t $(IMAGE):latest .
-	docker push $(IMAGE):latest
+	docker build -f faye.Dockerfile -t $(FAYE_IMAGE):$(FAYE_VERSION) .
+	docker build -f nginx.Dockerfile -t $(NGINX_IMAGE):$(NGINX_VERSION) .
 
 run:
 	docker-compose up --force-recreate --build
@@ -26,6 +24,9 @@ ps:
 	docker-compose ps
 
 publish: build
-	docker push $(IMAGE):$(VERSION)
-	docker build -t $(IMAGE):latest .
-	docker push $(IMAGE):latest
+	docker push $(FAYE_IMAGE):$(FAYE_VERSION)
+	docker push $(NGINX_IMAGE):$(NGINX_VERSION)
+	docker build -f faye.Dockerfile -t $(FAYE_IMAGE):latest .
+	docker build -f nginx.Dockerfile -t $(NGINX_IMAGE):latest .
+	docker push $(FAYE_IMAGE):latest
+	docker push $(NGINX_IMAGE):latest
