@@ -5,6 +5,7 @@ GEM
       public_suffix (>= 2.0.2, < 4.0)
     awesome_print (1.8.0)
     cookiejar (0.3.3)
+    daemons (1.3.1)
     em-hiredis (0.3.1)
       eventmachine (~> 1.0)
       hiredis (~> 0.6.0)
@@ -34,13 +35,21 @@ GEM
       websocket-driver (>= 0.5.1)
     hiredis (0.6.3)
     http_parser.rb (0.6.0)
+    ipaddr (1.2.2)
+    little-plugger (1.1.4)
+    logging (2.2.2)
+      little-plugger (~> 1.1)
+      multi_json (~> 1.10)
     multi_json (1.13.1)
-    nio4r (2.5.1)
+    openssl (2.1.2)
+      ipaddr
     permessage_deflate (0.1.4)
     public_suffix (3.1.1)
-    puma (4.1.0)
-      nio4r (~> 2.0)
-    rack (2.0.7)
+    rack (2.0.8)
+    thin (1.7.2)
+      daemons (~> 1.0, >= 1.0.9)
+      eventmachine (~> 1.0, >= 1.0.4)
+      rack (>= 1, < 3)
     websocket-driver (0.7.1)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.4)
@@ -52,8 +61,10 @@ DEPENDENCIES
   awesome_print
   faye
   faye-redis
+  logging
+  openssl
   permessage_deflate
-  puma
+  thin
 
 BUNDLED WITH
    2.0.1
